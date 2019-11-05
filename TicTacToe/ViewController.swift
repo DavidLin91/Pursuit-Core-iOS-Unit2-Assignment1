@@ -10,20 +10,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    var xPlayer = false // false = "x"
-    
+    var xPlayerStatus = TicTacToeBrain.init().xPlayer
+    var winComboLogic = TicTacToeBrain.init().winCombo // all possible win combos
     var buttonPressed = [0, 0, 0, 0, 0, 0, 0, 0, 0] // keep track of buttons pressed
-    
     @IBOutlet var gameButtons: [GameButton]!
     @IBOutlet weak var turnLabel: UILabel!
-    
-    
-    
+    var playingGame = true  // playing, no winner
+    var winningRowX = [Int]()
+    var winningRowO = [Int]()
     
     
   override func viewDidLoad() {
     super.viewDidLoad()
-    turnLabel.text = "Player One Turn (❌)"
+    resetGame()
   }
 
     @IBAction func gameButtonPressed(_ gameButton: GameButton) {
@@ -32,26 +31,46 @@ class ViewController: UIViewController {
         
         buttonPressed[gameButton.tag] = 1 // sets button = 1 so you can no longer press it after use
             
-        xPlayer.toggle()
-        if xPlayer {
+        xPlayerStatus.toggle() // true
+        if xPlayerStatus {
             gameButton.setImage(UIImage(named: "xdonut"), for: UIControl.State())
             turnLabel.text = "PLAYER TWO'S TURN (⭕️)"
+            winningRowX.append(gameButton.tag)
+            for arr in winComboLogic {
+                if winningRowX.sorted() == arr {
+                  turnLabel.text = "PLAYER ONE WINS!"
+                  buttonPressed = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+                }
+            }
+            
         } else {
             gameButton.setImage(UIImage(named: "odonut"), for: UIControl.State())
             turnLabel.text = "PLAYER ONE'S TURN (❌)"
-        }
+             winningRowO.append(gameButton.tag)
+            for arr in winComboLogic {
+                if winningRowO.sorted() == arr {
+                    turnLabel.text = "PLAYER TWO WINS!"
+                    buttonPressed = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+                }
+            }
         }
     }
-    
-    
+}
+ 
     
     @IBAction func startButton(_ sender: UIButton) {
-       turnLabel.text = "Player One Turn (❌)"
-        
+      resetGame()
     }
     
-    
-    
-    
+    func resetGame() {
+        buttonPressed = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        turnLabel.text = "Player One Turn (❌)"
+        xPlayerStatus = false
+        winningRowX = [Int]()
+        winningRowO = [Int]()
+        for button in gameButtons {
+            button.setImage( nil, for: .normal)
+        }
+    }
 }
 
