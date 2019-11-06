@@ -18,12 +18,16 @@ class ViewController: UIViewController {
     @IBOutlet var gameButtons: [GameButton]!
     @IBOutlet weak var turnLabel: UILabel!
     var playingGame = true  // playing, no winner
-    
-    
+    @IBOutlet weak var playerOneScoreBox: UILabel!
+    @IBOutlet weak var playerTwoScoreBox: UILabel!
+    var playerOneScore = 0
+    var playerTwoScore = 0
     
   override func viewDidLoad() {
     super.viewDidLoad()
     resetGame()
+    playerOneScoreBox.text = "0"
+    playerTwoScoreBox.text = "0"
   }
 
     @IBAction func gameButtonPressed(_ gameButton: GameButton) {
@@ -37,11 +41,13 @@ class ViewController: UIViewController {
             turnLabel.text = "PLAYER TWO'S TURN (⭕️)"
             winningRowX.append(gameButton.tag)
             let setRowX = Set(winningRowX) // changed array to set to use .intersect
-            for arr in winComboLogic {
+            for arr in winComboLogic { // logic to compare winning arrays to player x array
                 print(Array(setRowX.intersection(Set(arr))))
                 if Array(setRowX.intersection(Set(arr))).sorted() == arr { // changed set back to array and sorted to compare to array
                 print("player1 wins")
                   turnLabel.text = "PLAYER ONE WINS!"
+                  playerOneScore += 1
+                  playerOneScoreBox.text = String(playerOneScore)
                   buttonPressed = [1, 1, 1, 1, 1, 1, 1, 1, 2]
                 } else if buttonPressed == [1, 1, 1, 1, 1, 1, 1, 1, 1]{
                     print("elseprint")
@@ -57,6 +63,8 @@ class ViewController: UIViewController {
             for arr in winComboLogic {
                 if Array(setRowO.intersection(Set(arr))).sorted() == arr {
                     turnLabel.text = "PLAYER TWO WINS!"
+                    playerTwoScore += 1
+                    playerTwoScoreBox.text = String(playerTwoScore)
                     buttonPressed = [1, 1, 1, 1, 1, 1, 1, 1, 1]
                 }
             }
