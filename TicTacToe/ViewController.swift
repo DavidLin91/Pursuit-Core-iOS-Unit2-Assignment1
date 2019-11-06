@@ -40,12 +40,16 @@ class ViewController: UIViewController {
             for arr in winComboLogic {
                 print(Array(setRowX.intersection(Set(arr))))
                 if Array(setRowX.intersection(Set(arr))).sorted() == arr { // changed set back to array and sorted to compare to array
+                print("player1 wins")
                   turnLabel.text = "PLAYER ONE WINS!"
-                  buttonPressed = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+                  buttonPressed = [1, 1, 1, 1, 1, 1, 1, 1, 2]
+                } else if buttonPressed == [1, 1, 1, 1, 1, 1, 1, 1, 1]{
+                    print("elseprint")
+                    turnLabel.text = "D'🍩H!  IT'S A TIE"
                 }
             }
             
-        } else {
+        } else if xPlayerStatus == false {
             gameButton.setImage(UIImage(named: "odonut"), for: UIControl.State())
             turnLabel.text = "PLAYER ONE'S TURN (❌)"
              winningRowO.append(gameButton.tag)
@@ -67,7 +71,7 @@ class ViewController: UIViewController {
     
     func resetGame() {
         buttonPressed = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-        turnLabel.text = "Player One Turn (❌)"
+        turnLabel.text = "Player One's Turn (❌)"
         xPlayerStatus = false
         winningRowX = [Int]()
         winningRowO = [Int]()
